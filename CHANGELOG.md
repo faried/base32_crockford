@@ -1,5 +1,10 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+- Updated project to support Elixir `~> 1.18`.
+
 ## v1.0.0
 
 * implemented `decode!` which returns integer or raises an `ArgumentError`.

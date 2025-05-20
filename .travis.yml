@@ -2,13 +2,9 @@ language: elixir
 
 matrix:
   include:
-    - elixir: '1.4'
-      otp_release: '19.3'
-    - elixir: '1.5'
-      otp_release: '20.1'
-    - elixir: '1.6'
-      otp_release: '20.3'
-    - elixir: '1.7'
-      otp_release: '21.3'
-    - elixir: '1.8'
-      otp_release: '22.0'
+    - elixir: '1.18'
+      otp_release: '25'
+    - elixir: '1.18'
+      otp_release: '26'
+    - elixir: '1.18'
+      otp_release: '27'
