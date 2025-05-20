@@ -99,22 +99,26 @@ defmodule Base32Crockford do
   """
   @spec decode(binary, keyword) :: {:ok, integer} | :error
   def decode(binary, opts \\ []) when is_binary(binary) do
-    {chars, checksum} = binary
-    |> String.replace("-", "")
-    |> String.upcase
-    |> String.reverse
-    |> String.to_charlist
-    |> init_decoding(opts)
+    {chars, checksum} =
+      binary
+      |> String.replace("-", "")
+      |> String.upcase()
+      |> String.reverse()
+      |> String.to_charlist()
+      |> init_decoding(opts)
 
-    values = chars
-    |> Enum.with_index
-    |> Enum.map(&base32to10/1)
+    values =
+      chars
+      |> Enum.with_index()
+      |> Enum.map(&base32to10/1)
 
     case Enum.filter(values, &(&1 == :error)) do
       [] ->
         Enum.sum(values)
         |> check(checksum)
-      _ -> :error
+
+      _ ->
+        :error
     end
   end
 
@@ -134,12 +138,13 @@ defmodule Base32Crockford do
   @spec decode!(binary, keyword) :: integer
   def decode!(binary, opts \\ []) when is_binary(binary) do
     case decode(binary, opts) do
-      {:ok, number} -> number
+      {:ok, number} ->
+        number
+
       :error ->
         raise ArgumentError, "contains invalid character or checksum does not match"
     end
   end
-
 
   defp init_encoding(number, opts) do
     if Keyword.get(opts, :checksum, false) do
@@ -158,9 +163,10 @@ defmodule Base32Crockford do
     end
   end
 
-  defp base10to32([], 0), do: '0'
-  defp base10to32('0', 0), do: '00'
+  defp base10to32([], 0), do: ~c"0"
+  defp base10to32(~c"0", 0), do: ~c"00"
   defp base10to32(chars, 0), do: chars
+
   defp base10to32(chars, number) do
     reminder = rem(number, 32)
     chars = [enc(reminder) | chars]
@@ -170,16 +176,19 @@ defmodule Base32Crockford do
 
   defp base32to10({char, power}) do
     with {:ok, value} <- dec(char) do
-      value * :math.pow(32, power) |> round
+      (value * :math.pow(32, power)) |> round
     end
   end
 
   defp check(number, nil), do: {:ok, number}
+
   defp check(number, checksum) do
     case calculate_checksum(number) do
       ^checksum ->
         {:ok, number}
-      _ -> :error
+
+      _ ->
+        :error
     end
   end
 
@@ -187,14 +196,16 @@ defmodule Base32Crockford do
     case Keyword.get(opts, :partitions, 0) do
       count when count in [0, 1] ->
         binary
+
       count ->
         split([], binary, count)
-        |> Enum.reverse
+        |> Enum.reverse()
         |> Enum.join("-")
     end
   end
 
   defp split(parts, binary, 1), do: [binary | parts]
+
   defp split(parts, binary, count) do
     len = div(String.length(binary), count)
     {part, rest} = String.split_at(binary, len)
@@ -206,18 +217,25 @@ defmodule Base32Crockford do
     enc(reminder)
   end
 
-  encoding_symbols = '0123456789ABCDEFGHJKMNPQRSTVWXYZ'
-  check_symbols = '*~$=U'
+  encoding_symbols = ~c"0123456789ABCDEFGHJKMNPQRSTVWXYZ"
+  check_symbols = ~c"*~$=U"
   encoding_alphabet = Enum.with_index(encoding_symbols ++ check_symbols)
+
   for {encoding, value} <- encoding_alphabet do
     defp enc(unquote(value)), do: unquote(encoding)
   end
+
   decoding_alphabet = Enum.with_index(encoding_symbols)
+
   for {encoding, value} <- decoding_alphabet do
     defp dec(unquote(encoding)), do: {:ok, unquote(value)}
   end
-  defp dec(79), do: {:ok, 0} # O
-  defp dec(73), do: {:ok, 1} # I
-  defp dec(76), do: {:ok, 1} # L
+
+  # O
+  defp dec(79), do: {:ok, 0}
+  # I
+  defp dec(73), do: {:ok, 1}
+  # L
+  defp dec(76), do: {:ok, 1}
   defp dec(_), do: :error
 end
