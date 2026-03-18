@@ -1,5 +1,9 @@
 # Base32Crockford
-[![Build Status](https://travis-ci.org/voldy/base32_crockford.svg?branch=master)](https://travis-ci.org/voldy/base32_crockford)
+
+This is a minor fork to support Elixir 1.18 and above.  I do not plan
+to publish this on hex.pm.
+
+Original README (with changes to URLs, etc.):
 
 An alternate base32 encoding as described by Douglas Crockford at: 
 [https://www.crockford.com/wrmg/base32.html](https://www.crockford.com/wrmg/base32.html)
@@ -33,7 +37,7 @@ The package can be installed as:
 
     ```elixir
     def deps do
-      [{:base32_crockford, "~> 1.0.0"}]
+      [{:base32_crockford, git: "https://github.com/faried/base32_crockford.git", branch: "master"}]
     end
     ```
 
@@ -61,5 +65,6 @@ Hosted on [http://hexdocs.pm/base32_crockford/readme.html](http://hexdocs.pm/bas
 
 ## Author
 Vladimir Zhukov
+Faried Nawaz
 
-Base32Crockford is released under the [MIT License](https://github.com/voldy/base32_crockford/blob/master/LICENSE).
+Base32Crockford is released under the [MIT License](https://github.com/faried/base32_crockford/blob/master/LICENSE).

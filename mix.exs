@@ -4,18 +4,18 @@ defmodule Base32Crockford.Mixfile do
   @version "1.0.0"
 
   def project do
-    [app: :base32_crockford,
-     version: @version,
-     elixir: "~> 1.18",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     deps: deps(),
-     package: package(),
-     description: description(),
-
-     name: "Base32-Crockford",
-     source_url: "https://githubcom/voldy/base32_crockford",
-     docs: docs()
+    [
+      app: :base32_crockford,
+      version: @version,
+      elixir: "~> 1.18",
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
+      deps: deps(),
+      package: package(),
+      description: description(),
+      name: "Base32-Crockford",
+      source_url: "https://github.com/faried/base32_crockford",
+      docs: docs()
     ]
   end
 
@@ -36,9 +36,9 @@ defmodule Base32Crockford.Mixfile do
   defp package do
     [
       files: ["lib", "mix.exs", "LICENSE", "README.md", "CHANGELOG.md"],
-      maintainers: ["Vladimir Zhukov"],
+      maintainers: ["Vladimir Zhukov", "Faried Nawaz"],
       licenses: ["MIT"],
-      links: %{"GitHub" => "https://github.com/voldy/base32_crockford"}
+      links: %{"GitHub" => "https://github.com/faried/base32_crockford"}
     ]
   end
 
@@ -47,7 +47,7 @@ defmodule Base32Crockford.Mixfile do
       main: "readme",
       extras: ["README.md"],
       source_ref: "v#{@version}",
-      source_url: "https://githubcom/voldy/base32_crockford",
+      source_url: "https://github.com/faried/base32_crockford"
     ]
   end
 end
