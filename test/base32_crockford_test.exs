@@ -61,6 +61,15 @@ defmodule Base32CrockfordTest do
     test "ignores hyphens" do
       assert {:ok, 1_000_000_000} == decode("XS-NJ-G0")
     end
+
+    test "decodes very long strings (> 204 characters)" do
+      # 32^205 is a very large number that would overflow/lose precision with :math.pow
+      long_string = String.duplicate("1", 210)
+      {:ok, decoded} = decode(long_string)
+      assert is_integer(decoded)
+      # Verify that encoding it back gives the same string
+      assert encode(decoded) == long_string
+    end
   end
 
   describe "#decode!" do
@@ -77,6 +86,7 @@ defmodule Base32CrockfordTest do
 
     test "raises ArgumentError when wrong check symbol" do
       assert 1439 == decode!("1CZ~", checksum: true)
+
       assert_raise ArgumentError, fn ->
         decode!("1CZ*", checksum: true)
       end

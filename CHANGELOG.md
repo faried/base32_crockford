@@ -3,7 +3,10 @@
 ## [Unreleased]
 
 ### Changed
+
+## v1.0.1
 - Updated project to support Elixir `~> 1.18`.
+- Fix: base32to10 works on strings > 204 chars.
 
 ## v1.0.0
 
